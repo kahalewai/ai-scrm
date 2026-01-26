@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-scs.org/schemas/abom-1.0.schema.json",
+  "title": "AI Bill of Materials (ABOM)",
+  "description": "AI-SCS compliant ABOM schema extending CycloneDX 1.6",
+  "type": "object",
+  "required": ["bomFormat", "specVersion", "serialNumber", "version", "metadata", "components"]
+}
