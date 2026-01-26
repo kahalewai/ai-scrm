@@ -2,8 +2,8 @@
 
 ## Securing Your AI Infrastructure with AI Supply Chain Risk Management
 
-**Version:** 1.0.0  
-**Standard:** AI-SCS (AI Supply Chain Security) v0.1  
+**Version:** 1.0.1  
+**Standard:** AI-SCS (AI Supply Chain Security) v1.0.0  
 **License:** Apache 2.0
 
 ---
@@ -153,7 +153,7 @@ python -c "import ai_scrm; print(f'AI-SCRM v{ai_scrm.__version__} installed succ
 
 Expected output:
 ```
-AI-SCRM v1.0.0 installed successfully
+AI-SCRM v1.0.1 installed successfully
 ```
 
 ### Verify CLI
