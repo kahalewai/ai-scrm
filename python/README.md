@@ -6,7 +6,7 @@
 **Standard:** AI-SCS (AI Supply Chain Security) v1.0.0  
 **License:** Apache 2.0
 
----
+<br>
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@
 14. [Troubleshooting](#14-troubleshooting)
 15. [Appendix: AI-SCS Compliance Checklist](#15-appendix-ai-scs-compliance-checklist)
 
----
+<br>
 
 ## 1. Introduction
 
@@ -70,7 +70,7 @@ AI-SCRM addresses these risks through three **Control Domains**:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### What's New in v1.0
+### Features Shipped in v1.0
 
 | Feature | Description |
 |---------|-------------|
@@ -90,7 +90,7 @@ AI-SCRM addresses these risks through three **Control Domains**:
 | **Level 2** | Integrity | Artifact signing, verification enforcement |
 | **Level 3** | Continuous Assurance | Runtime validation, automated detection |
 
----
+<br>
 
 ## 2. Prerequisites
 
@@ -116,7 +116,7 @@ AI-SCRM addresses these risks through three **Control Domains**:
 - Access to model files and configuration
 - Understanding of your deployment environment
 
----
+<br>
 
 ## 3. Installation
 
@@ -162,7 +162,7 @@ AI-SCRM v1.0.1 installed successfully
 ai-scrm --version
 ```
 
----
+<br>
 
 ## 4. Quick Start: One Command Setup
 
@@ -285,7 +285,7 @@ event = detector.check_tool_authorized("filesystem-mcp")
 if event.is_compliant():
     print("✓ Tool authorized")
 
----
+<br>
 
 ## 5. Auto-Discovery & Scanning
 
@@ -634,7 +634,7 @@ result.to_dict()     # Full JSON-serializable dict
 ```
 
 
----
+<br>
 
 ## 6. Control Domain 1: ABOM Creation
 
@@ -1014,7 +1014,7 @@ print(f"Model hash: {model_hash}")
 
 **Note:** The Scanner computes hashes automatically during discovery.
 
----
+<br>
 
 ## 7. Control Domain 2: Trust & Signing
 
@@ -1149,7 +1149,7 @@ Key Storage:
 - [ ] Keep root keys offline and air-gapped
 - [ ] Distribute public keys through secure channels
 
----
+<br>
 
 ## 8. Control Domain 3: Runtime Validation
 
@@ -1374,7 +1374,7 @@ policy.add_rule(
 emitter.add_handler(policy.evaluate)
 ```
 
----
+<br>
 
 ## 9. Continuous Monitoring
 
@@ -1564,7 +1564,7 @@ if __name__ == "__main__":
     main()
 ```
 
----
+<br>
 
 ## 10. Framework Integrations
 
@@ -1768,7 +1768,7 @@ if is_bypass_active():
     print(f"⚠️  Bypass active: {get_bypass_reason()}")
 ```
 
----
+<br>
 
 ## 11. CLI Reference
 
@@ -1891,7 +1891,7 @@ ai-scrm approve model:updated-weights
 ai-scrm reject mcp:suspicious-server
 ```
 
----
+<br>
 
 ## 12. CI/CD Integration
 
@@ -2034,7 +2034,7 @@ repos:
         pass_filenames: false
 ```
 
----
+<br>
 
 ## 13. Best Practices
 
@@ -2120,7 +2120,7 @@ def cached_component_check(bom_ref: str, actual_hash: str):
     return detector.check_component(bom_ref, actual_hash)
 ```
 
----
+<br>
 
 ## 14. Troubleshooting
 
@@ -2295,7 +2295,7 @@ ai-scrm --verbose scan
 ai-scrm -v status
 ```
 
----
+<br>
 
 ## 15. Appendix: AI-SCS Compliance Checklist
 
@@ -2408,7 +2408,7 @@ Use this checklist to verify your implementation meets AI-SCS requirements.
 - [ ] FastAPI middleware available
 - [ ] Emergency bypass with logging
 
----
+<br>
 
 ## Support & Resources
 
