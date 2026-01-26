@@ -4,11 +4,21 @@
 
 **AI Supply Chain Risk Management for Secure AI Infrastructure**
 
-![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue) ![python](https://img.shields.io/badge/python-3.9+-green) ![license](https://img.shields.io/badge/license-Apache%202.0-orange) ![tests](https://img.shields.io/badge/tests-146%20passing-brightgreen)
+![ai-scrm](https://github.com/user-attachments/assets/7a8163ce-ad11-4341-a76a-1bf1eac853ad)
+<br>
+![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue) 
+![python](https://img.shields.io/badge/python-3.9+-green) 
+![license](https://img.shields.io/badge/license-Apache%202.0-orange)
 
 Version 1.0.1
 
 </div>
+
+
+
+
+
+
 
 <br>
 
