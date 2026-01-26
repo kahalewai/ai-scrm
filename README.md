@@ -308,6 +308,13 @@ ai_scrm/
 
 <br>
 
+
+## Full Implementation Guide
+
+See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/README.md for full detailed specification and usage.
+
+<br>
+
 ## Three Control Domains
 
 AI-SCRM implements all three AI-SCS Control Domains:
@@ -545,8 +552,6 @@ if any(e.event_type == "drift" for e in events):
 if detector.check_tool_authorized("web-search").is_compliant():
     result = web_search_tool.execute(query)
 ```
-
-See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/README.md for complete validation setup.
 
 <br>
 
