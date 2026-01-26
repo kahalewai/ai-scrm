@@ -546,15 +546,7 @@ if detector.check_tool_authorized("web-search").is_compliant():
     result = web_search_tool.execute(query)
 ```
 
-See the [Implementation Guide](./AI-SCRM-Implementation-Guide.md#7-control-domain-3-runtime-validation) for complete validation setup.
-
-<br>
-
-## Documentation
-
-* **[Implementation Guide](./ImplementationGuide.md)** - Complete setup with all Control Domains
-* **CI/CD Integration** - GitHub Actions, GitLab CI examples in guide
-* **Kubernetes** - Admission controller example in guide
+See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/README.md for complete validation setup.
 
 <br>
 
