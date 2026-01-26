@@ -4,7 +4,7 @@
 
 **AI Supply Chain Risk Management for Secure AI Infrastructure**
 
-![ai-scrm](https://img.shields.io/badge/AI--SCS-v0.1-blue) ![python](https://img.shields.io/badge/python-3.9+-green) ![license](https://img.shields.io/badge/license-Apache%202.0-orange) ![tests](https://img.shields.io/badge/tests-146%20passing-brightgreen)
+![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue) ![python](https://img.shields.io/badge/python-3.9+-green) ![license](https://img.shields.io/badge/license-Apache%202.0-orange) ![tests](https://img.shields.io/badge/tests-146%20passing-brightgreen)
 
 Version 1.0.1
 
@@ -560,6 +560,7 @@ See the [Implementation Guide](./AI-SCRM-Implementation-Guide.md#7-control-domai
 
 | Version | Changes |
 |---------|---------|
+| 1.0.1 | Minor release: Bug fixes in CLI Syntax and Logic |
 | 1.0.0 | Full release: Auto-discovery, smart inference, continuous monitoring, framework integrations, Ed25519/RSA/ECDSA signing, RADE events |
 
 <br>
