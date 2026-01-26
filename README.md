@@ -3,22 +3,14 @@
 # AI-SCRM
 
 **AI Supply Chain Risk Management for Secure AI Infrastructure**
-
 ![ai-scrm](https://github.com/user-attachments/assets/490bc534-329d-4c63-8366-53c71a8338b0)
 <br>
-![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue) 
+[![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue)](https://github.com/kahalewai/ai-scs)
 ![python](https://img.shields.io/badge/python-3.9+-green) 
 ![license](https://img.shields.io/badge/license-Apache%202.0-orange)
-
-Version 1.0.1
+[![Version](https://img.shields.io/badge/version-1.0.1-red.svg)](https://github.com/kahalewai/ai-scrm)
 
 </div>
-
-
-
-
-
-
 
 <br>
 
