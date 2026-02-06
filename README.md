@@ -1,10 +1,9 @@
 <div align="center">
 
-# AI-SCRM
+<img width="583" height="472" alt="ai-scrm" src="https://github.com/user-attachments/assets/4abb6fae-6297-41ed-8794-cd54e97ae76b" />
 
-**AI Supply Chain Risk Management for Secure AI Infrastructure**
-![ai-scrm](https://github.com/user-attachments/assets/490bc534-329d-4c63-8366-53c71a8338b0)
 <br>
+
 [![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue)](https://github.com/kahalewai/ai-scs)
 ![python](https://img.shields.io/badge/python-3.9+-green) 
 ![license](https://img.shields.io/badge/license-Apache%202.0-orange)
@@ -19,11 +18,11 @@
 AI-SCRM is the reference implementation of the AI-SCS (AI Supply Chain Security) standard for securing AI infrastructure. It provides production-ready tools to document, sign, and validate AI system components—protecting against model backdooring, dataset poisoning, unauthorized tool activation, and supply chain attacks.
 
 AI-SCRM is intended to:
-* **Auto-discover** models, MCP servers, libraries, and prompts with one command
-* **Infer metadata** for 100+ common model families automatically
-* **Sign and verify** AI artifacts with Ed25519/RSA/ECDSA
-* **Continuously monitor** for drift with configurable intervals
-* **Integrate easily** with LangChain, FastAPI, and CI/CD pipelines
+* Auto-discover models, MCP servers, libraries, and prompts with one command
+* Infer metadata for 100+ common model families automatically
+* Sign and verify AI artifacts with Ed25519/RSA/ECDSA
+* Continuously monitor for drift with configurable intervals
+* Integrate easily with LangChain, FastAPI, and CI/CD pipelines
 * Provide clear, actionable error messages
 * Support production deployments with SIEM integration
 
@@ -47,11 +46,11 @@ ai-scrm monitor
 
 That's it. In under 2 minutes, AI-SCRM will:
 
-1. 🔍 **Scan** for models, MCP servers, libraries, and prompts
-2. 🧠 **Infer** suppliers for known models (Llama, Mistral, GPT, etc.)
-3. 📋 **Generate** a metadata template for items needing review
-4. 🔑 **Create** signing keys and sign your ABOM
-5. 📊 **Start** monitoring for drift
+1. Scan for models, MCP servers, libraries, and prompts
+2. Infer suppliers for known models (Llama, Mistral, GPT, etc.)
+3. Generate a metadata template for items needing review
+4. Create signing keys and sign your ABOM
+5. Start monitoring for drift
 
 <br>
 
