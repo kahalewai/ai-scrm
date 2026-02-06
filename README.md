@@ -1,8 +1,11 @@
 <div align="center">
-
+  
+AI Supply Chain Risk Management for Secure AI Systems
+  
 <img width="583" height="472" alt="ai-scrm" src="https://github.com/user-attachments/assets/4abb6fae-6297-41ed-8794-cd54e97ae76b" />
 
 <br>
+
 
 [![ai-scrm](https://img.shields.io/badge/AI--SCS-v1.0.0-blue)](https://github.com/kahalewai/ai-scs)
 ![python](https://img.shields.io/badge/python-3.9+-green) 
