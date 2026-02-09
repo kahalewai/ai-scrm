@@ -56,7 +56,7 @@ That's it. In under 2 minutes, AI-SCRM will:
 
 ## How AI-SCRM Works
 
-Implementing AI supply chain security requires that your AI system becomes inventory-aware AND your runtime environment validates against the declared inventory. AI-SCRM automates both. Each Control Domain enforces the same core requirement:
+Implementing AI Supply Chain Standard requires that your AI system becomes inventory-aware AND your runtime environment validates against the declared inventory. AI-SCRM automates both. Each Control Domain enforces the same core requirement:
 
 <br>
 
@@ -89,11 +89,16 @@ Implementing AI supply chain security requires that your AI system becomes inven
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-Access is permitted only when artifacts are declared, signed, and verified.
+<br>
+
+## AI-SCRM Design
+
+AI-SCRM is designed to conform to the AI-SCS (AI Supply Chain Standard)
+* AI-SCS Standard v1.0.0 Document: https://github.com/kahalewai/ai-scs
 
 <br>
 
-**Key Characteristics**
+**AI-SCRM Characteristics**
 
 | Aspect              | Scope                                    |
 | ------------------- | ---------------------------------------- |
@@ -106,48 +111,20 @@ Access is permitted only when artifacts are declared, signed, and verified.
 
 <br>
 
-## Installation
+**Works with Your Existing Security Infrastructure**
 
-```bash
-# Basic installation
-pip install ai-scrm
+AI-SCRM was designed to work with your existing security tools:
 
-# With all features (signing, CLI, YAML support)
-pip install ai-scrm[all]
-```
-
-<br>
-
-## Auto-Discovery
-
-AI-SCRM automatically finds your AI components:
-
-| Component | How It's Discovered |
-|-----------|---------------------|
-| **Models** | Scans directories for `.safetensors`, `.gguf`, `.pt`, `.onnx` files |
-| **MCP Servers** | Parses Claude Desktop config, `mcp.json`, environment variables |
-| **Libraries** | Reads `pip list`, `requirements.txt`, `pyproject.toml` |
-| **Prompts** | Finds `*.prompt`, `system_prompt*`, `*.jinja2` files |
-
-<br>
-
-**Smart Metadata Inference**
-
-AI-SCRM recognizes 100+ model families and automatically fills in:
-
-```python
-# Automatically inferred from filename:
-"llama-3-8b-instruct.safetensors" → supplier: Meta, type: fine-tuned, params: 8B
-"mistral-7b-v0.1.gguf" → supplier: Mistral AI, architecture: mistral
-"text-embedding-ada-002.onnx" → supplier: OpenAI, type: embedding
-"claude-3-sonnet.bin" → supplier: Anthropic, family: Claude 3
-```
+* Uses CycloneDX 1.6, a standard SBOM format
+* Emits SIEM-compatible structured events
+* Integrates with policy engines via callbacks
+* Supports existing key management (HSM, cloud KMS)
+* Works with CI/CD pipelines (GitHub Actions, GitLab)
+* Compatible with Kubernetes admission controllers
 
 <br>
 
 **Trust Boundary Classification**
-
-MCP servers are automatically classified based on endpoint:
 
 | Pattern | Trust Boundary |
 |---------|----------------|
@@ -166,26 +143,14 @@ trust_boundaries:
 
 <br>
 
-## Continuous Monitoring
+## Installation
 
-AI-SCRM monitors with three tiers:
+```bash
+# Basic installation
+pip install ai-scrm
 
-| Tier | Default Interval | What It Checks |
-|------|------------------|----------------|
-| **Hash Check** | 60 seconds | File integrity of known components |
-| **MCP Heartbeat** | 5 minutes | MCP server availability |
-| **Full Scan** | 30 minutes | Discover new/removed components |
-
-```python
-from ai_scrm import Monitor
-
-monitor = Monitor(
-    abom_path="abom-signed.json",
-    hash_check_interval=30,      # Faster checks
-    mcp_heartbeat_interval=120,
-    on_drift=lambda e: alert(e)  # Custom handler
-)
-monitor.start()
+# With all features (signing, CLI, YAML support)
+pip install ai-scrm[all]
 ```
 
 <br>
@@ -230,8 +195,6 @@ if event.is_compliant():
     print("✓ Tool authorized")
 ```
 
-For complete setup instructions, see the [Implementation Guide](./AI-SCRM-Implementation-Guide.md).
-
 <br>
 
 ## Framework Integrations
@@ -275,206 +238,6 @@ with emergency_bypass(reason="Production incident #1234"):
 
 <br>
 
-## Package Structure
-
-```
-ai_scrm/
-├── __init__.py              # Main exports
-├── abom/                    # Control Domain 1: ABOM
-│   ├── models.py            # ABOM, Component, Hash, Property
-│   ├── builder.py           # Fluent builder for all asset types
-│   └── exceptions.py        # ABOM-specific exceptions
-├── trust/                   # Control Domain 2: Trust
-│   ├── signing.py           # Ed25519, RSA, ECDSA signers
-│   ├── verification.py      # Signature verification
-│   └── assertion.py         # Trust assertions (AI-SCS 6.3)
-├── validation/              # Control Domain 3: Validation
-│   ├── detector.py          # Drift detection
-│   ├── events.py            # RADE events (attestation, drift, violation)
-│   └── emitter.py           # SIEM/SOAR integration
-├── scanner/                 # Auto-Discovery
-│   ├── scanner.py           # Main scanner
-│   ├── inference.py         # Model metadata inference (100+ models)
-│   ├── mcp_discovery.py     # MCP server discovery
-│   └── metadata.py          # YAML metadata handling
-├── monitor/                 # Continuous Validation
-│   └── monitor.py           # Tiered monitoring (hash/heartbeat/scan)
-├── integrations/            # Framework Shortcuts
-│   └── integrations.py      # guard, langchain_guard, FastAPI
-└── cli/                     # Command-Line Interface
-    └── __init__.py          # init, scan, status, monitor, etc.
-```
-
-<br>
-
-
-## Full Implementation Guide
-
-See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/README.md for full detailed specification and usage.
-
-<br>
-
-## Three Control Domains
-
-AI-SCRM implements all three AI-SCS Control Domains:
-
-| Domain | Purpose | Key Features |
-|--------|---------|--------------|
-| **CD1: ABOM** | Inventory & Provenance | All 7 asset categories, mandatory fields, CycloneDX 1.6 |
-| **CD2: Trust** | Integrity & Authenticity | Signing, verification, trust assertions |
-| **CD3: Validation** | Continuous Assurance | Drift detection, events, enforcement |
-
-```python
-# Control Domain 1: ABOM
-from ai_scrm import ABOMBuilder
-builder = ABOMBuilder()
-builder.add_model(...)
-builder.add_mcp_server(...)
-abom = builder.finalize()
-
-# Control Domain 2: Trust
-from ai_scrm import Signer, Verifier
-signer = Signer.generate("ed25519")
-signer.sign(abom)
-
-# Control Domain 3: Validation
-from ai_scrm import DriftDetector, RADEEmitter
-detector = DriftDetector(abom)
-emitter = RADEEmitter()
-emitter.add_file_handler("events.jsonl")
-```
-
-<br>
-
-## Supported Asset Categories (AI-SCS 4.1)
-
-AI-SCRM supports all seven AI-SCS asset categories:
-
-| Category | Examples | Builder Methods |
-|----------|----------|-----------------|
-| **Models** | Base models, fine-tuned, adapters | `add_model()`, `add_fine_tuned_model()`, `add_adapter()` |
-| **Data** | Training, evaluation datasets | `add_dataset()`, `add_training_data()` |
-| **Embeddings** | Embedding models, vector stores | `add_embedding_model()`, `add_vector_store()` |
-| **Dependencies** | Frameworks, tokenizers, libraries | `add_library()`, `add_framework()`, `add_tokenizer()` |
-| **Agents** | Orchestrators, planners | `add_agent()`, `add_planner()`, `add_orchestrator()` |
-| **Tools** | Plugins, MCP servers, APIs | `add_tool()`, `add_mcp_server()`, `add_external_api()` |
-| **Infrastructure** | TEEs, accelerators | `add_infrastructure()`, `add_tee()`, `add_accelerator()` |
-
-Plus behavioral artifacts: `add_prompt_template()`, `add_policy()`, `add_guardrail()`
-
-<br>
-
-## MCP Server Security
-
-AI-SCRM provides specific support for Model Context Protocol (MCP) servers:
-
-```python
-# MCP servers have mandatory fields per AI-SCS 5.3.5
-builder.add_mcp_server(
-    name="filesystem-mcp",
-    version="1.0.0",
-    endpoint="http://localhost:3000",      # REQUIRED
-    trust_boundary="internal",              # REQUIRED: internal, external, hybrid
-    capabilities=["read", "write", "list"]  # REQUIRED
-)
-
-# Runtime validation before connecting
-detector = DriftDetector(abom)
-event = detector.check_mcp_authorized("filesystem-mcp", endpoint="http://localhost:3000")
-if not event.is_compliant():
-    raise SecurityError(f"Unauthorized MCP: {event.observation.details}")
-```
-
-<br>
-
-| MCP Authorized | Endpoint Matches | Result |
-| -------------- | ---------------- | ------ |
-| ✅             | ✅               | ALLOW  |
-| ❌             | ✅               | DENY   |
-| ✅             | ❌               | DENY   |
-| ❌             | ❌               | DENY   |
-
-<br>
-
-## Clear Error Messages
-
-AI-SCRM provides actionable errors:
-
-```
-Signature validation failed for abom.json
-
-The ABOM file has been modified since it was signed.
-This could mean:
-  • Someone tampered with the file (security incident)
-  • You made legitimate changes and forgot to re-sign
-
-To fix:
-  • If changes were intentional: ai-scrm sign abom.json
-  • If unexpected: Investigate first - this may be a security incident
-```
-
-<br>
-
-## Diff-Based Approval
-
-When drift is detected:
-
-```bash
-$ ai-scrm status
-
-⚠️  2 changes detected:
-
-[NEW] MCP Server: slack-notifications-mcp
-      Endpoint: http://localhost:3005
-      Action: ai-scrm approve slack-notifications-mcp
-
-[CHANGED] Model: llama-3-8b.safetensors
-      Hash: a1b2c3... → x7y8z9...
-      Action: ai-scrm approve model:llama-3-8b
-```
-
-<br>
-
-## SIEM/SOAR Integration
-
-AI-SCRM emits structured RADE (Runtime Attestation & Drift Events) for security integration:
-
-```python
-from ai_scrm import RADEEmitter, DriftDetector
-
-# Create emitter with handlers
-emitter = RADEEmitter(system_name="my-ai-assistant")
-emitter.add_file_handler("./logs/rade-events.jsonl")
-emitter.add_webhook_handler("https://siem.company.com/api/events")
-
-# Emit events from validation
-detector = DriftDetector(abom)
-events = detector.check("./deployed-system")
-emitter.emit_all(events)
-
-# Events are SIEM-compatible JSON
-# {
-#   "eventType": "drift",
-#   "severity": "critical",
-#   "observation": {"type": "model-substitution", ...},
-#   "abomBinding": {"serialNumber": "urn:uuid:..."}
-# }
-```
-
-<br>
-
-## Conformance Levels (AI-SCS Section 8)
-
-AI-SCRM supports all three AI-SCS conformance levels:
-
-| Level | Name | Requirements | AI-SCRM Support |
-|-------|------|--------------|-----------------|
-| **Level 1** | Visibility | ABOM generation, static provenance | ✅ `Scanner`, `ABOMBuilder` |
-| **Level 2** | Integrity | Artifact signing, verification | ✅ `Signer`, `Verifier` |
-| **Level 3** | Continuous Assurance | Runtime validation, automated detection | ✅ `Monitor`, `DriftDetector`, `RADEEmitter` |
-
-<br>
-
 ## CLI Reference
 
 ```bash
@@ -510,29 +273,83 @@ ai-scrm reject mcp:suspicious-server
 
 <br>
 
-## Works with Your Existing Security Infrastructure
+## Full Implementation Guide
 
-AI-SCRM was designed to work with your existing security tools:
-
-* Uses CycloneDX 1.6, a standard SBOM format
-* Emits SIEM-compatible structured events
-* Integrates with policy engines via callbacks
-* Supports existing key management (HSM, cloud KMS)
-* Works with CI/CD pipelines (GitHub Actions, GitLab)
-* Compatible with Kubernetes admission controllers
+See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/IMPLEMENTATION_GUIIDE.md for full detailed specification and usage.
 
 <br>
 
-| Component Declared | Signature Valid | Hash Matches | Result |
-| ------------------ | --------------- | ------------ | ------ |
-| ✅                 | ✅              | ✅           | ALLOW  |
-| ❌                 | ✅              | ✅           | DENY   |
-| ✅                 | ❌              | ✅           | DENY   |
-| ✅                 | ✅              | ❌           | DENY   |
+## AI-SCRM Features
+
+**Auto-Discovery**
+
+AI-SCRM automatically finds your AI components:
+
+| Component | How It's Discovered |
+|-----------|---------------------|
+| **Models** | Scans directories for `.safetensors`, `.gguf`, `.pt`, `.onnx` files |
+| **MCP Servers** | Parses Claude Desktop config, `mcp.json`, environment variables |
+| **Libraries** | Reads `pip list`, `requirements.txt`, `pyproject.toml` |
+| **Prompts** | Finds `*.prompt`, `system_prompt*`, `*.jinja2` files |
 
 <br>
 
-## Runtime Validation Scenarios
+**Supported Asset Categories**
+
+AI-SCRM supports all seven AI-SCS asset categories (AI-SCS 4.1):
+
+| Category | Examples | Builder Methods |
+|----------|----------|-----------------|
+| **Models** | Base models, fine-tuned, adapters | `add_model()`, `add_fine_tuned_model()`, `add_adapter()` |
+| **Data** | Training, evaluation datasets | `add_dataset()`, `add_training_data()` |
+| **Embeddings** | Embedding models, vector stores | `add_embedding_model()`, `add_vector_store()` |
+| **Dependencies** | Frameworks, tokenizers, libraries | `add_library()`, `add_framework()`, `add_tokenizer()` |
+| **Agents** | Orchestrators, planners | `add_agent()`, `add_planner()`, `add_orchestrator()` |
+| **Tools** | Plugins, MCP servers, APIs | `add_tool()`, `add_mcp_server()`, `add_external_api()` |
+| **Infrastructure** | TEEs, accelerators | `add_infrastructure()`, `add_tee()`, `add_accelerator()` |
+
+Plus behavioral artifacts: `add_prompt_template()`, `add_policy()`, `add_guardrail()`
+
+<br>
+
+**Smart Metadata Inference**
+
+AI-SCRM recognizes 100+ model families and automatically fills in:
+
+```python
+# Automatically inferred from filename:
+"llama-3-8b-instruct.safetensors" → supplier: Meta, type: fine-tuned, params: 8B
+"mistral-7b-v0.1.gguf" → supplier: Mistral AI, architecture: mistral
+"text-embedding-ada-002.onnx" → supplier: OpenAI, type: embedding
+"claude-3-sonnet.bin" → supplier: Anthropic, family: Claude 3
+```
+
+<br>
+
+**MCP Server Support**
+
+AI-SCRM provides specific support for Model Context Protocol (MCP) servers:
+
+```python
+# MCP servers have mandatory fields per AI-SCS 5.3.5
+builder.add_mcp_server(
+    name="filesystem-mcp",
+    version="1.0.0",
+    endpoint="http://localhost:3000",      # REQUIRED
+    trust_boundary="internal",              # REQUIRED: internal, external, hybrid
+    capabilities=["read", "write", "list"]  # REQUIRED
+)
+
+# Runtime validation before connecting
+detector = DriftDetector(abom)
+event = detector.check_mcp_authorized("filesystem-mcp", endpoint="http://localhost:3000")
+if not event.is_compliant():
+    raise SecurityError(f"Unauthorized MCP: {event.observation.details}")
+```
+
+<br>
+
+**Runtime Validation Scenarios**
 
 AI-SCRM supports various validation scenarios:
 
@@ -550,6 +367,142 @@ if any(e.event_type == "drift" for e in events):
 # Tool authorization before use
 if detector.check_tool_authorized("web-search").is_compliant():
     result = web_search_tool.execute(query)
+```
+
+<br>
+
+**Continuous Monitoring**
+
+AI-SCRM monitors with three tiers:
+
+| Tier | Default Interval | What It Checks |
+|------|------------------|----------------|
+| **Hash Check** | 60 seconds | File integrity of known components |
+| **MCP Heartbeat** | 5 minutes | MCP server availability |
+| **Full Scan** | 30 minutes | Discover new/removed components |
+
+```python
+from ai_scrm import Monitor
+
+monitor = Monitor(
+    abom_path="abom-signed.json",
+    hash_check_interval=30,      # Faster checks
+    mcp_heartbeat_interval=120,
+    on_drift=lambda e: alert(e)  # Custom handler
+)
+monitor.start()
+```
+
+<br>
+
+**Diff-Based Approval**
+
+When drift is detected:
+
+```bash
+$ ai-scrm status
+
+⚠️  2 changes detected:
+
+[NEW] MCP Server: slack-notifications-mcp
+      Endpoint: http://localhost:3005
+      Action: ai-scrm approve slack-notifications-mcp
+
+[CHANGED] Model: llama-3-8b.safetensors
+      Hash: a1b2c3... → x7y8z9...
+      Action: ai-scrm approve model:llama-3-8b
+```
+
+<br>
+
+**SIEM/SOAR Integration**
+
+AI-SCRM emits structured RADE (Runtime Attestation & Drift Events) for security integration:
+
+```python
+from ai_scrm import RADEEmitter, DriftDetector
+
+# Create emitter with handlers
+emitter = RADEEmitter(system_name="my-ai-assistant")
+emitter.add_file_handler("./logs/rade-events.jsonl")
+emitter.add_webhook_handler("https://siem.company.com/api/events")
+
+# Emit events from validation
+detector = DriftDetector(abom)
+events = detector.check("./deployed-system")
+emitter.emit_all(events)
+
+# Events are SIEM-compatible JSON
+# {
+#   "eventType": "drift",
+#   "severity": "critical",
+#   "observation": {"type": "model-substitution", ...},
+#   "abomBinding": {"serialNumber": "urn:uuid:..."}
+# }
+```
+
+<br>
+
+## AI-SCRM Conformance
+
+AI-SCRM conforms with all 3 Levels of AI-SCS Control Domains:
+
+| Domain | Purpose | Requirements | AI-SCRM Support |
+|--------|---------|--------------|-----------------|
+| **CD1** | Inventory & Provenance | ABOM generation, static provenance |  ✅ `Scanner`, `ABOMBuilder` |
+| **CD2** | Integrity & Authenticity | Artifact signing, verification |  ✅ `Signer`, `Verifier` |
+| **CD3** | Continuous Assurance | Runtime validation, automated detection |  ✅ `Monitor`, `DriftDetector`, `RADEEmitter` |
+
+```python
+# Control Domain 1: ABOM
+from ai_scrm import ABOMBuilder
+builder = ABOMBuilder()
+builder.add_model(...)
+builder.add_mcp_server(...)
+abom = builder.finalize()
+
+# Control Domain 2: Trust
+from ai_scrm import Signer, Verifier
+signer = Signer.generate("ed25519")
+signer.sign(abom)
+
+# Control Domain 3: Validation
+from ai_scrm import DriftDetector, RADEEmitter
+detector = DriftDetector(abom)
+emitter = RADEEmitter()
+emitter.add_file_handler("events.jsonl")
+```
+
+<br>
+
+## Package Structure
+
+```
+ai_scrm/
+├── __init__.py              # Main exports
+├── abom/                    # Control Domain 1: ABOM
+│   ├── models.py            # ABOM, Component, Hash, Property
+│   ├── builder.py           # Fluent builder for all asset types
+│   └── exceptions.py        # ABOM-specific exceptions
+├── trust/                   # Control Domain 2: Trust
+│   ├── signing.py           # Ed25519, RSA, ECDSA signers
+│   ├── verification.py      # Signature verification
+│   └── assertion.py         # Trust assertions (AI-SCS 6.3)
+├── validation/              # Control Domain 3: Validation
+│   ├── detector.py          # Drift detection
+│   ├── events.py            # RADE events (attestation, drift, violation)
+│   └── emitter.py           # SIEM/SOAR integration
+├── scanner/                 # Auto-Discovery
+│   ├── scanner.py           # Main scanner
+│   ├── inference.py         # Model metadata inference (100+ models)
+│   ├── mcp_discovery.py     # MCP server discovery
+│   └── metadata.py          # YAML metadata handling
+├── monitor/                 # Continuous Validation
+│   └── monitor.py           # Tiered monitoring (hash/heartbeat/scan)
+├── integrations/            # Framework Shortcuts
+│   └── integrations.py      # guard, langchain_guard, FastAPI
+└── cli/                     # Command-Line Interface
+    └── __init__.py          # init, scan, status, monitor, etc.
 ```
 
 <br>
