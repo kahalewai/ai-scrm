@@ -275,7 +275,7 @@ ai-scrm reject mcp:suspicious-server
 
 ## Full Implementation Guide
 
-See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/IMPLEMENTATION_GUIIDE.md for full detailed specification and usage.
+See the Implementation Guide https://github.com/kahalewai/ai-scrm/blob/main/python/README.md for full detailed specification and usage.
 
 <br>
 
