@@ -284,6 +284,7 @@ detector = DriftDetector(abom)
 event = detector.check_tool_authorized("filesystem-mcp")
 if event.is_compliant():
     print("✓ Tool authorized")
+```
 
 <br>
 
@@ -631,7 +632,7 @@ result.summary()     # {'models': 3, 'mcp_servers': 47, ...}
 # Serialize
 result.to_dict()     # Full JSON-serializable dict
 ```
-```
+
 
 
 <br>
